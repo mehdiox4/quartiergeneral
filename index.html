@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Commandes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #111;
+            color: #fff;
+        }
+
+        header {
+
+            text-align: center;
+            margin-bottom: 20px;
+        }
+img{
+       float: left;
+       width: 150px;
+}
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        #commande-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #commande-form input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: #333;
+            color: white;
+        }
+
+        #commande-form button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #commande-form button:hover {
+            background-color: #555;
+        }
+
+        .commande-column {
+            max-width: auto;
+            margin: 0 auto;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #222;
+        }
+
+        .commande-column h3 {
+            text-align: center;
+            margin-bottom: 2px;
+        }
+
+        .commande-item {
+            padding: 10px;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+
+        .commande-item button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .commande-item button:hover {
+            background-color: darkred;
+        }
+
+        #fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #fullscreen-btn:hover {
+            background-color: #555;
+        }
+        .commande-item span {
+            font-size: 20px; /* Augmentation de la taille du texte */
+            font-weight: bold;
+            align-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="data:image/png;base64,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" alt="">
+        <h1>QUARTIER GENERAL</h1>
+    </header>
+
+    <!-- Formulaire pour ajouter une commande -->
+    <div id="commande-form">
+       
+        <input type="number" id="numCommande" placeholder="Numéro de commande">
+        <button id="btnPrete" onclick="ajouterCommande()">Ajouter</button>
+    </div>
+    <br><br><br>
+    <!-- Section pour les commandes prêtes -->
+    <div class="commande-column">
+        <h3>Commandes Prêtes</h3>
+        <div id="commandes-pretes"></div>
+    </div>
+
+    <!-- Bouton pour passer en plein écran -->
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">Plein Écran</button>
+
+    <script>
+        // Chargement des commandes depuis le localStorage au démarrage
+        let commandes = JSON.parse(localStorage.getItem('commandes')) || [];
+
+        // Fonction pour afficher les commandes dans la page
+        function afficherCommandes() {
+            const commandesPretesDiv = document.getElementById('commandes-pretes');
+            commandesPretesDiv.innerHTML = ''; // Efface les anciennes commandes
+
+            commandes.forEach(commande => {
+                if (commande.status === 'prête') {
+                    const commandeDiv = document.createElement('div');
+                    commandeDiv.classList.add('commande-item');
+                    commandeDiv.innerHTML = `<span>${commande.id_commande}</span>
+                        <button onclick="supprimerCommande(${commande.id_commande})">Supprimer</button>`;
+                    commandesPretesDiv.appendChild(commandeDiv);
+                }
+            });
+        }
+
+        // Fonction pour ajouter une nouvelle commande avec le statut "Prête"
+        function ajouterCommande() {
+            const numCommande = document.getElementById('numCommande').value;
+
+            if (!numCommande) {
+                return; // Si aucun numéro n'est saisi, on ne fait rien
+            }
+
+            const newCommande = {
+                id_commande: parseInt(numCommande),
+                status: 'prête'
+            };
+
+            // Ajouter la nouvelle commande à la liste et la stocker dans le localStorage
+            commandes.push(newCommande);
+            localStorage.setItem('commandes', JSON.stringify(commandes));
+
+            afficherCommandes(); // Rafraîchissement de la liste
+            document.getElementById('numCommande').value = '';
+        }
+
+        // Fonction pour supprimer une commande
+        function supprimerCommande(id_commande) {
+            commandes = commandes.filter(commande => commande.id_commande !== id_commande);
+            localStorage.setItem('commandes', JSON.stringify(commandes));
+            afficherCommandes(); // Rafraîchissement de la liste
+        }
+
+        // Fonction pour activer/désactiver le plein écran
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                    document.documentElement.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE/Edge
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Écouter l'événement 'keydown' pour activer l'ajout de commande avec Enter
+        document.getElementById('numCommande').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                ajouterCommande();
+            }
+        });
+
+        // Charger et afficher les commandes au démarrage
+        afficherCommandes();
+    </script>
+</body>
+</html>
